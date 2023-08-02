@@ -67,12 +67,13 @@ body {
   align-items: center;
   gap: 0.5rem;
   padding: 1rem 1rem;
-}
-
-.weather-list-item--day {
   font-size: 1.3rem;
 }
 
-.weather-list-item--temp {
-  font-size: 1.3rem;
+.weather-list-item--icon {
+  font-size: 2rem;
+}
+
+.weather-list-item--temp span {
+  font-weight: 700;
 }

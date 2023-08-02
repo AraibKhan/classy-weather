@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import WeatherList from "./components/WeatherList";
 
 const App = () => {
@@ -7,38 +7,53 @@ const App = () => {
   const [weatherData, setWeatherData] = useState({});
   const [countryCode, setCountryCode] = useState("");
 
-  async function getWeather(location) {
-    try {
-      setIsLoading(true);
-      setWeatherData({});
+  useEffect(() => {
+    const controller1 = new AbortController();
+    const controller2 = new AbortController();
 
-      //1. Get location coords.
-      const res = await fetch(
-        `https://geocoding-api.open-meteo.com/v1/search?name=${location}`
-      );
-      const geocode = await res.json();
-      if (!geocode.results) throw new Error("Location not found!");
+    async function getWeather(location) {
+      if (location === "") return;
+      try {
+        setIsLoading(true);
+        setWeatherData({});
 
-      const { latitude, longitude, country_code, timezone } =
-        geocode.results.at(0);
+        //1. Get location coords.
+        const res = await fetch(
+          `https://geocoding-api.open-meteo.com/v1/search?name=${location}`,
+          { signal: controller1.signal }
+        );
+        const geocode = await res.json();
+        if (!geocode.results) throw new Error("Location not found!");
 
-      //2. Fetching Weather
-      const weatherRes = await fetch(
-        `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&timezone=${timezone}&daily=weathercode,temperature_2m_max,temperature_2m_min`
-      );
-      const weatherData = await weatherRes.json();
-      setIsLoading(false);
-      setCountryCode(country_code);
-      setWeatherData({
-        min: weatherData.daily.temperature_2m_min,
-        max: weatherData.daily.temperature_2m_max,
-        time: weatherData.daily.time,
-        weathercode: weatherData.daily.weathercode,
-      });
-    } catch (err) {
-      console.error(err);
+        const { latitude, longitude, country_code, timezone } =
+          geocode.results.at(0);
+
+        //2. Fetching Weather
+        const weatherRes = await fetch(
+          `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&timezone=${timezone}&daily=weathercode,temperature_2m_max,temperature_2m_min`,
+          { signal: controller2.signal }
+        );
+        const weatherData = await weatherRes.json();
+        setIsLoading(false);
+        setCountryCode(country_code);
+        setWeatherData({
+          min: weatherData.daily.temperature_2m_min,
+          max: weatherData.daily.temperature_2m_max,
+          time: weatherData.daily.time,
+          weathercode: weatherData.daily.weathercode,
+        });
+      } catch (err) {
+        console.error(err);
+      }
     }
-  }
+
+    getWeather(input);
+
+    return function () {
+      controller1.abort();
+      controller2.abort();
+    };
+  }, [input]);
 
   return (
     <div className="app">
@@ -50,14 +65,13 @@ const App = () => {
         placeholder="Search For Location..."
       />
       {isLoading && <p className="status">Loading...</p>}
-      {!isLoading && Object.keys(weatherData).length !== 0 && (
+      {!isLoading && Object.keys(weatherData).length !== 0 && input !== "" && (
         <WeatherList
           weatherData={weatherData}
           countryCode={countryCode}
           input={input}
         />
       )}
-      <button onClick={() => getWeather(input)}>Get Weather</button>
     </div>
   );
 };

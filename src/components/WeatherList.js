@@ -9,8 +9,6 @@ const WeatherList = ({ weatherData, countryCode, input }) => {
     return String.fromCodePoint(...codePoints);
   }
 
-  console.log(convertToFlag(countryCode));
-
   return (
     <>
       <p className="status">

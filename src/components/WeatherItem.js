@@ -1,5 +1,14 @@
 const WeatherItem = ({ min, max, time, weathercode }) => {
   function formatDay(dateStr) {
+    const today = new Date().toLocaleDateString("en-US", {
+      timeZone: "UTC",
+    });
+    const currDate = new Date(dateStr).toLocaleDateString("en-US", {
+      timeZone: "UTC",
+    });
+
+    if (today === currDate) return "Today";
+
     return new Intl.DateTimeFormat("en", {
       weekday: "short",
     }).format(new Date(dateStr));
@@ -25,11 +34,14 @@ const WeatherItem = ({ min, max, time, weathercode }) => {
 
   return (
     <li className="weather-list-item">
-      <p>{`${getWeatherIcon(weathercode)}`}</p>
+      <p className="weather-list-item--icon">{`${getWeatherIcon(
+        weathercode
+      )}`}</p>
       <p className="weather-list-item--day">{formatDay(time)}</p>
-      <p className="weather-list-item--temp">{`${Math.round(min)}°—${Math.round(
-        max
-      )}°`}</p>
+      <p className="weather-list-item--temp">
+        {`${Math.round(min)}°—`}
+        <span>{`${Math.round(max)}°`}</span>
+      </p>
     </li>
   );
 };
