@@ -1,13 +1,78 @@
-body {
+@import url("https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&display=swap");
+
+* {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  padding: 0;
+  box-sizing: border-box;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+html {
+  font-size: 62.5%;
+}
+
+body {
+  background-color: #eabfb9;
+  font-family: "Cinzel Decorative", cursive;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  color: #222;
+}
+
+.app {
+  border: 1px solid black;
+  outline: 1px solid black;
+  outline-offset: 1rem;
+  width: 70rem;
+  padding: 3rem 4rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
+}
+
+.app h1 {
+  font-weight: normal;
+}
+
+.app input {
+  background-color: #f0d2ce;
+  outline: none;
+  border: none;
+  padding: 1rem;
+  font-family: inherit;
+  color: inherit;
+}
+
+.status {
+  font-weight: 700;
+}
+
+/* Weather List */
+.weather-list {
+  list-style: none;
+  display: flex;
+  gap: 2rem;
+}
+
+.weather-list-item {
+  background-color: #f0d2ce;
+  width: 7rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 1rem 1rem;
+}
+
+.weather-list-item--day {
+  font-size: 1.3rem;
+}
+
+.weather-list-item--temp {
+  font-size: 1.3rem;
 }
