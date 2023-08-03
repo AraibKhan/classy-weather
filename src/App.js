@@ -13,7 +13,6 @@ const App = () => {
     const controller2 = new AbortController();
 
     async function getWeather(location) {
-      setIsLoading(false);
       if (location === "") return;
       try {
         setIsLoading(true);
@@ -44,12 +43,11 @@ const App = () => {
           time: weatherData.daily.time,
           weathercode: weatherData.daily.weathercode,
         });
+        setIsLoading(false);
       } catch (err) {
         if (err.name !== "AbortError") {
           console.error(err);
         }
-      } finally {
-        setIsLoading(false);
       }
     }
 
