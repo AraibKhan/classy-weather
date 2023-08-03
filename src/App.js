@@ -40,7 +40,7 @@ const App = () => {
         setWeatherData({
           min: weatherData.daily.temperature_2m_min,
           max: weatherData.daily.temperature_2m_max,
-          time: weatherData.daily.time,
+          date: weatherData.daily.time,
           weathercode: weatherData.daily.weathercode,
         });
         setIsLoading(false);

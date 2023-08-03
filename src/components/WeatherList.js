@@ -19,9 +19,10 @@ const WeatherList = ({ weatherData, countryCode, location }) => {
           return (
             <WeatherItem
               key={val}
+              isToday={i === 0}
               min={weatherData.min[i]}
               max={weatherData.max[i]}
-              time={weatherData.time[i]}
+              date={weatherData.date[i]}
               weathercode={weatherData.weathercode[i]}
               countryCode={countryCode}
             />

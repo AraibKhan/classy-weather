@@ -80,7 +80,3 @@ body {
 .weather-list-item--icon {
   font-size: 2rem;
 }
-
-.weather-list-item--temp span {
-  font-weight: 700;
-}
