@@ -1,6 +1,6 @@
 import WeatherItem from "./WeatherItem";
 
-const WeatherList = ({ weatherData, countryCode, input }) => {
+const WeatherList = ({ weatherData, countryCode, location }) => {
   function convertToFlag(countryCode) {
     const codePoints = countryCode
       .toUpperCase()
@@ -12,7 +12,7 @@ const WeatherList = ({ weatherData, countryCode, input }) => {
   return (
     <>
       <p className="status">
-        Weather for {`${input} ${convertToFlag(countryCode)}`}
+        Weather for {`${location} ${convertToFlag(countryCode)}`}
       </p>
       <ul className="weather-list">
         {Array.from({ length: 7 }, (_, i) => i + 1).map((val, i) => {

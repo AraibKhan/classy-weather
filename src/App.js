@@ -6,12 +6,14 @@ const App = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [weatherData, setWeatherData] = useState({});
   const [countryCode, setCountryCode] = useState("");
+  const [locationName, setLocationName] = useState("");
 
   useEffect(() => {
     const controller1 = new AbortController();
     const controller2 = new AbortController();
 
     async function getWeather(location) {
+      setIsLoading(false);
       if (location === "") return;
       try {
         setIsLoading(true);
@@ -25,7 +27,7 @@ const App = () => {
         const geocode = await res.json();
         if (!geocode.results) throw new Error("Location not found!");
 
-        const { latitude, longitude, country_code, timezone } =
+        const { latitude, longitude, country_code, timezone, name } =
           geocode.results.at(0);
 
         //2. Fetching Weather
@@ -34,8 +36,8 @@ const App = () => {
           { signal: controller2.signal }
         );
         const weatherData = await weatherRes.json();
-        setIsLoading(false);
         setCountryCode(country_code);
+        setLocationName(name);
         setWeatherData({
           min: weatherData.daily.temperature_2m_min,
           max: weatherData.daily.temperature_2m_max,
@@ -43,7 +45,11 @@ const App = () => {
           weathercode: weatherData.daily.weathercode,
         });
       } catch (err) {
-        console.error(err);
+        if (err.name !== "AbortError") {
+          console.error(err);
+        }
+      } finally {
+        setIsLoading(false);
       }
     }
 
@@ -62,14 +68,14 @@ const App = () => {
         type="text"
         value={input}
         onChange={(e) => setInput(e.target.value)}
-        placeholder="Search For Location..."
+        placeholder="Search From Location"
       />
       {isLoading && <p className="status">Loading...</p>}
       {!isLoading && Object.keys(weatherData).length !== 0 && input !== "" && (
         <WeatherList
           weatherData={weatherData}
           countryCode={countryCode}
-          input={input}
+          location={locationName}
         />
       )}
     </div>
