@@ -7,16 +7,22 @@ const App = () => {
   const [weatherData, setWeatherData] = useState({});
   const [countryCode, setCountryCode] = useState("");
   const [locationName, setLocationName] = useState("");
+  const [isError, setIsError] = useState("");
 
   useEffect(() => {
     const controller1 = new AbortController();
     const controller2 = new AbortController();
 
     async function getWeather(location) {
-      if (location === "") return;
+      if (location.length < 2) {
+        setIsLoading(false);
+        setWeatherData({});
+        return;
+      }
       try {
         setIsLoading(true);
         setWeatherData({});
+        setIsError("");
 
         //1. Get location coords.
         const res = await fetch(
@@ -46,7 +52,9 @@ const App = () => {
         setIsLoading(false);
       } catch (err) {
         if (err.name !== "AbortError") {
-          console.error(err);
+          setIsLoading(false);
+          setIsError(err.message);
+          console.error(err.message);
         }
       }
     }
@@ -68,14 +76,18 @@ const App = () => {
         onChange={(e) => setInput(e.target.value)}
         placeholder="Search From Location"
       />
+      {!isLoading && isError && <p>{isError}</p>}
       {isLoading && <p className="status">Loading...</p>}
-      {!isLoading && Object.keys(weatherData).length !== 0 && input !== "" && (
-        <WeatherList
-          weatherData={weatherData}
-          countryCode={countryCode}
-          location={locationName}
-        />
-      )}
+      {!isLoading &&
+        !isError &&
+        Object.keys(weatherData).length !== 0 &&
+        input !== "" && (
+          <WeatherList
+            weatherData={weatherData}
+            countryCode={countryCode}
+            location={locationName}
+          />
+        )}
     </div>
   );
 };
