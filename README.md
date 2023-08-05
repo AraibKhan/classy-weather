@@ -6,7 +6,7 @@ Classy Weather is a small React app that allows users to get a seven-day weather
 
 - Get a seven-day weather forecast for any city or area.
 - Weather forecast includes minimum and maximum temperatures.
-- Weather emojis indicate the weather condition for each day (e.g., ☀️ for sunny, ☁️ for cloudy, 🌧️ for rainy).
+- Weather emojis indicate the weather condition for each day (e.g. ☀️ for sunny, ☁️ for cloudy, 🌧️ for rainy).
 
 ## Acknowledegments
 
